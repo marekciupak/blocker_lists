@@ -1,0 +1,42 @@
+name: Periodic regeneration
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '45 7 * * *'
+
+env:
+  MIX_ENV: prod
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Set up OTP and Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: '24.x'
+          elixir-version: '1.12.x'
+
+      - name: Install dependencies
+        run: mix deps.get
+
+      - name: Compile
+        run: mix compile
+
+      - name: Regenerate blocker lists
+        run: mix run -e "BlockerLists.regenerate()"
+
+      - name: Setup git config
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+
+      - name: Commit
+        run: |
+          git add blockerList.json
+          git commit -m "Regenerate blockerList.json"
+          git push origin main
