@@ -1,18 +1,26 @@
 defmodule BlockerLists do
-  @moduledoc """
-  Documentation for `BlockerLists`.
-  """
+  alias BlockerLists.Sources
 
-  @doc """
-  Hello world.
+  def regenerate do
+    File.write!("blockerList.json", build_json())
+  end
 
-  ## Examples
+  def build_json do
+    [
+      %{
+        action: %{
+          type: "block"
+        },
+        trigger: %{
+          "url-filter": ".*",
+          "if-domain": blocked_domains()
+        }
+      }
+    ]
+    |> Jason.encode!()
+  end
 
-      iex> BlockerLists.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  defp blocked_domains do
+    Sources.StevenBlack.domains() ++ Sources.CertPolska.domains()
   end
 end
