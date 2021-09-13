@@ -2,7 +2,7 @@ name: Periodic regeneration
 on:
   workflow_dispatch:
   schedule:
-    - cron: '45 7 * * *'
+    - cron: '25 5 * * *'
 
 env:
   MIX_ENV: prod
