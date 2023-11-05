@@ -26,8 +26,6 @@ defmodule BlockerLists do
   end
 
   defp build_brave(domains) do
-    domains
-    |> Enum.map(&"||#{&1}^\n")
-    |> Enum.join("")
+    "[Adblock Plus 1.1]\n" <> Enum.map_join(domains, &"||#{&1}^\n")
   end
 end
