@@ -2,7 +2,7 @@ name: Periodic regeneration
 on:
   workflow_dispatch:
   schedule:
-    - cron: '25 5 * * *'
+    - cron: "25 5 * * *"
 
 env:
   MIX_ENV: prod
@@ -18,8 +18,8 @@ jobs:
       - name: Set up OTP and Elixir
         uses: erlef/setup-beam@v1
         with:
-          otp-version: '24.x'
-          elixir-version: '1.12.x'
+          otp-version: "26.x"
+          elixir-version: "1.15.x"
 
       - name: Install dependencies
         run: mix deps.get

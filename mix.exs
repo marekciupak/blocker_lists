@@ -5,7 +5,7 @@ defmodule BlockerLists.MixProject do
     [
       app: :blocker_lists,
       version: "0.1.0",
-      elixir: "~> 1.12",
+      elixir: "~> 1.15",
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
@@ -21,8 +21,8 @@ defmodule BlockerLists.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:httpoison, "~> 1.8"},
-      {:jason, "~> 1.2"},
+      {:httpoison, "~> 2.0"},
+      {:jason, "~> 1.4"},
       {:mix_test_watch, "~> 1.0", only: :dev}
     ]
   end
