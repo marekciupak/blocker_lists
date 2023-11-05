@@ -37,6 +37,6 @@ jobs:
 
       - name: Commit
         run: |
-          git add blockerList.json
+          git add blockerList.json brave.txt brave-with-social.txt
           git commit -m "Regenerate blockerList.json"
           git push origin main

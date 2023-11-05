@@ -1,9 +1,16 @@
 defmodule BlockerLists.Sources.StevenBlack do
   alias BlockerLists.Github.HTTPClient, as: GithubAPI
 
+  def domains_with_social do
+    build("alternates/fakenews-gambling-porn-social/hosts")
+  end
+
   def domains do
+    build("alternates/fakenews-gambling-porn/hosts")
+  end
+
+  defp build(path) do
     repo = "StevenBlack/hosts"
-    path = "alternates/fakenews-gambling-porn/hosts"
     tag = latest_release(repo)
 
     %{body: body, status_code: 200} = GithubAPI.get_raw!(repo, tag, path)

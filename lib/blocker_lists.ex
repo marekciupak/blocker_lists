@@ -2,10 +2,15 @@ defmodule BlockerLists do
   alias BlockerLists.Sources
 
   def regenerate do
-    File.write!("blockerList.json", build_json())
+    domains = Sources.StevenBlack.domains() ++ Sources.CertPolska.domains()
+    domains_with_social = Sources.StevenBlack.domains_with_social() ++ Sources.CertPolska.domains()
+
+    File.write!("blockerList.json", build_ios(domains))
+    File.write!("brave.txt", build_brave(domains))
+    File.write!("brave-with-social.txt", build_brave(domains_with_social))
   end
 
-  def build_json do
+  defp build_ios(domains) do
     [
       %{
         action: %{
@@ -13,14 +18,16 @@ defmodule BlockerLists do
         },
         trigger: %{
           "url-filter": ".*",
-          "if-domain": blocked_domains()
+          "if-domain": domains
         }
       }
     ]
     |> Jason.encode!()
   end
 
-  defp blocked_domains do
-    Sources.StevenBlack.domains() ++ Sources.CertPolska.domains()
+  defp build_brave(domains) do
+    domains
+    |> Enum.map(&"||#{&1}^\n")
+    |> Enum.join("")
   end
 end
